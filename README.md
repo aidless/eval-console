@@ -27,6 +27,7 @@ python3 -m evalconsole demo --db ./demo.db --tasks 30 --workers 3
 {{SOAK_TABLE}}
 
 测试：`33` 条 pytest（`32` 条常规 + `1` 条真实 SIGKILL 慢用例），全部通过。
+2 小时 soak 不是 pytest 用例（CI 机时不允许），由 `scripts/soak.py` 驱动，产出 `evidence/soak_report.json` 与 `evidence/dashboard_soak.html`。
 
 ## 机制
 

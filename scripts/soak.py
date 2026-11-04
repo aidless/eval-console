@@ -392,13 +392,15 @@ def main() -> int:
                           "alerts_jsonl": os.path.join(out_dir, "soak_alerts.jsonl")},
     }
     report["drain_ok"] = ok_terminal
+    report["mid_run_kill_ok"] = kill_record is not None and kill_record.get("reassign_ms") is not None
     out = os.path.join(out_dir, "soak_report.json")
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(report, fh, ensure_ascii=False, indent=2)
     print(json.dumps({k: report[k] for k in ("actual_duration_s", "deadlock", "heartbeat", "mid_run_kill")},
                      ensure_ascii=False, indent=2))
     print(f"report: {out}")
-    return 0 if ok_terminal and not mem_monotonic else 1
+    kill_required = args.kill_at > 0
+    return 0 if ok_terminal and not mem_monotonic and (not kill_required or report["mid_run_kill_ok"]) else 1
 
 
 if __name__ == "__main__":
