@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-11-04T01:14:08-0800",
+  "host": "liuzewen-Nitro-AN515-45",
+  "cpu_count": 16,
+  "loadavg_start": [
+    1.94,
+    4.74,
+    7.12
+  ],
+  "loadavg_end": [
+    1.74,
+    4.24,
+    6.82
+  ],
+  "wall_seconds": 47.6,
+  "reps": [
+    {
+      "rep": 1,
+      "task_id": "k-000",
+      "killed_worker": "w2",
+      "killed_pid": 4133905,
+      "new_worker": "w1",
+      "reassign_ms": 5110.1,
+      "reclaim_after_kill_ms": 4048.7,
+      "silence_ms_at_reclaim": 5000.9,
+      "done_after_kill_ms": 13180.3
+    },
+    {
+      "rep": 2,
+      "task_id": "k-004",
+      "killed_worker": "w1",
+      "killed_pid": 4133904,
+      "new_worker": "w3",
+      "reassign_ms": 7040.5,
+      "reclaim_after_kill_ms": 5373.9,
+      "silence_ms_at_reclaim": 5498.8,
+      "done_after_kill_ms": 15111.0
+    },
+    {
+      "rep": 3,
+      "task_id": "k-008",
+      "killed_worker": "w3",
+      "killed_pid": 4133906,
+      "new_worker": "w2",
+      "reassign_ms": 4848.1,
+      "reclaim_after_kill_ms": 4768.1,
+      "silence_ms_at_reclaim": 5000.8,
+      "done_after_kill_ms": 12917.8
+    }
+  ],
+  "summary": {
+    "reps_measured": 3,
+    "reassign_ms_min": 4848.1,
+    "reassign_ms_max": 7040.5,
+    "reassign_ms_mean": 5666.2,
+    "all_within_10s": true
+  }
+}

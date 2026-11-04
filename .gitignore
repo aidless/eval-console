@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+*.db
+*.db-wal
+*.db-shm
+dashboard.html
+alerts.jsonl
+ci-*.html
+ci-*.jsonl
+soak_run.log

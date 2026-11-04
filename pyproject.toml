@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eval-console"
+version = "0.1.0"
+description = "评测 fleet 的持续运行与自愈：SQLite 状态机、worker 心跳、kill 后自动重派、控制台看板"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "eval-console" }]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.setuptools]
+packages = ["evalconsole"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: 真实多进程 + SIGKILL，CI 默认不跑"]
