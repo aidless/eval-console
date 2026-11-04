@@ -1,0 +1,129 @@
+{
+  "generated_at": "2026-11-04T03:07:57-0800",
+  "planned_duration_s": 7200.0,
+  "actual_duration_s": 7200.0,
+  "started_at": "2026-11-04 01:07:56",
+  "ended_at": "2026-11-04 03:07:56",
+  "host": "liuzewen-Nitro-AN515-45",
+  "cpu_count": 16,
+  "workers": 3,
+  "max_outstanding": 6,
+  "feed_interval_s": 1.0,
+  "loadavg1_samples": {
+    "n": 480,
+    "min": 0.15,
+    "max": 12.61,
+    "mean": 2.25,
+    "samples_over_4": 51,
+    "first": 1.88,
+    "last": 0.92,
+    "high_load_caveat": true
+  },
+  "tasks": {
+    "total": 6855,
+    "final_counts": {
+      "pending": 0,
+      "running": 0,
+      "done": 6855,
+      "failed": 0,
+      "retried": 0
+    },
+    "redispatched_tasks": 1,
+    "p95_latency_s": 0.089,
+    "success_rate": 1.0
+  },
+  "deadlock": {
+    "no_stuck_tasks": true,
+    "overdue_running_events": 0
+  },
+  "heartbeat": {
+    "max_gap_s": 1.6,
+    "per_worker": {
+      "w1": 1.53,
+      "w2": 1.6,
+      "w3": 1.5
+    },
+    "per_worker_including_kill_window": {
+      "w1": 1.53,
+      "w2": 1.6,
+      "w3": 6.9
+    },
+    "all_under_5s": true,
+    "max_observed_age_s": 6.76,
+    "note": "per_worker 已排除 SIGKILL 停机窗口那一个间隔；原始值见 including_kill_window。"
+  },
+  "memory": {
+    "segments": {
+      "w2": [
+        {
+          "pid": 4121429,
+          "duration_min": 119.5,
+          "rss_first_kb": 21752,
+          "rss_last_kb": 14888,
+          "delta_kb": -6864,
+          "delta_pct": -31.56,
+          "slope_kb_per_min": -17.88,
+          "increasing_steps": 19,
+          "samples": 479
+        }
+      ],
+      "w1": [
+        {
+          "pid": 4121428,
+          "duration_min": 119.5,
+          "rss_first_kb": 21748,
+          "rss_last_kb": 14868,
+          "delta_kb": -6880,
+          "delta_pct": -31.64,
+          "slope_kb_per_min": -17.86,
+          "increasing_steps": 18,
+          "samples": 479
+        }
+      ],
+      "w3": [
+        {
+          "pid": 4121430,
+          "duration_min": 59.5,
+          "rss_first_kb": 21708,
+          "rss_last_kb": 14860,
+          "delta_kb": -6848,
+          "delta_pct": -31.55,
+          "slope_kb_per_min": -67.38,
+          "increasing_steps": 14,
+          "samples": 239
+        },
+        {
+          "pid": 36816,
+          "duration_min": 59.5,
+          "rss_first_kb": 21708,
+          "rss_last_kb": 14928,
+          "delta_kb": -6780,
+          "delta_pct": -31.23,
+          "slope_kb_per_min": -146.74,
+          "increasing_steps": 9,
+          "samples": 239
+        }
+      ]
+    },
+    "monotonic_growth_detected": false,
+    "note": "斜率按采样点最小二乘拟合；被 SIGKILL 重启的 worker 单独成段。"
+  },
+  "mid_run_kill": {
+    "killed_worker": "w3",
+    "killed_pid": 4121430,
+    "task_id": "s-003444",
+    "reassign_ms": 5578.6,
+    "new_worker": "w1",
+    "done_after_kill_ms": 5679.5,
+    "at_elapsed_s": 3606.9,
+    "killed_at_epoch": 1793786876.996805,
+    "restarted_at_epoch": 1793786883.680943
+  },
+  "alerts": [],
+  "runtime_paths": {
+    "db": "/home/liuzewen/eval-console/evidence/soak.db",
+    "dashboard": "/home/liuzewen/eval-console/evidence/dashboard_soak.html",
+    "alerts_jsonl": "/home/liuzewen/eval-console/evidence/soak_alerts.jsonl"
+  },
+  "drain_ok": true
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>eval-console · fleet 看板</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;margin:24px;background:#fafafa;color:#1f2328}
+ h1{font-size:20px;margin:0 0 4px} .sub{color:#6b7280;font-size:12px;margin-bottom:18px}
+ .kpis{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+ .kpi{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;min-width:110px}
+ .kpi b{display:block;font-size:22px} .kpi span{color:#6b7280;font-size:12px}
+ table{border-collapse:collapse;background:#fff;border:1px solid #e5e7eb;margin-bottom:18px;width:100%}
+ th,td{padding:7px 10px;border-bottom:1px solid #eef0f2;text-align:left;font-size:13px}
+ th{background:#f6f7f9} .alive{color:#15803d;font-weight:600} .stale{color:#b45309;font-weight:600}
+ .stopped{color:#6b7280}
+</style></head><body>
+<h1>eval-console · 评测 fleet 看板</h1>
+<div class="sub">生成于 2026-11-04 03:07:57 ｜ 数据源: SQLite ｜ stale 阈值 15s</div>
+<div class="kpis">
+ <div class="kpi"><b>6855</b><span>任务总数</span></div>
+ <div class="kpi"><b>6855</b><span>done</span></div>
+ <div class="kpi"><b>0</b><span>failed</span></div>
+ <div class="kpi"><b>0</b><span>running</span></div>
+ <div class="kpi"><b>100.0%</b><span>成功率</span></div>
+ <div class="kpi"><b>0.089s</b><span>P95 时延</span></div>
+ <div class="kpi"><b>1</b><span>重派次数</span></div>
+</div>
+<table><thead><tr><th>worker</th><th>pid</th><th>状态</th><th>心跳龄(s)</th><th>重启</th><th>当前/最近任务</th></tr></thead>
+<tbody><tr><td>w1</td><td>4121428</td><td class='stopped'>stopped</td><td>1.33</td><td>0</td><td>-</td></tr>
+<tr><td>w2</td><td>4121429</td><td class='stopped'>stopped</td><td>1.32</td><td>0</td><td>-</td></tr>
+<tr><td>w3</td><td>36816</td><td class='stopped'>stopped</td><td>0.33</td><td>1</td><td>-</td></tr></tbody></table>
+<table><thead><tr><th>时间</th><th>规则</th><th>对象</th><th>消息</th></tr></thead>
+<tbody><tr><td colspan='4'>无告警</td></tr></tbody></table>
+</body></html>

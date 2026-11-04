@@ -1,0 +1,200 @@
+{
+  "generated_at": "2026-11-04T03:49:50-0800",
+  "soak": {
+    "planned_duration_s": 7200.0,
+    "actual_duration_s": 7200.0,
+    "full_7200s": true,
+    "started_at": "2026-11-04 01:07:56",
+    "ended_at": "2026-11-04 03:07:56",
+    "workers": 3,
+    "max_outstanding": 6,
+    "feed_interval_s": 1.0,
+    "db_file": "evidence/soak.db",
+    "db_size_bytes": 3149824,
+    "note": "soak.py 正常退出（exit 0）；drain 阶段把积压清空后才停止进程。"
+  },
+  "tasks": {
+    "total": 6855,
+    "counts": {
+      "done": 6855
+    },
+    "success_rate": 1.0,
+    "p95_latency_s": 0.089,
+    "redispatched_tasks": 1,
+    "deadlock_no_stuck_tasks": true,
+    "overdue_running_events": 0,
+    "events": {
+      "scheduler_cycle": 1,
+      "task_done": 6855,
+      "task_reclaimed": 1,
+      "worker_restart": 1,
+      "worker_start": 4,
+      "worker_stop": 3
+    },
+    "redispatches": [
+      {
+        "task_id": "s-003444",
+        "from_worker": "w3",
+        "silence_ms": 5392.197847366333,
+        "reclaim_ms": 385.72072982788086
+      }
+    ]
+  },
+  "heartbeat": {
+    "w1": {
+      "heartbeat_rows": 7189,
+      "max_gap_s": 1.53,
+      "max_gap_with_kill_window_s": 1.53,
+      "gaps_over_5s_excluding_kill": 0,
+      "gaps_over_5s_raw": 0,
+      "longest_gap_at_s": 619.4
+    },
+    "w2": {
+      "heartbeat_rows": 7191,
+      "max_gap_s": 1.6,
+      "max_gap_with_kill_window_s": 1.6,
+      "gaps_over_5s_excluding_kill": 0,
+      "gaps_over_5s_raw": 0,
+      "longest_gap_at_s": 311.2
+    },
+    "w3": {
+      "heartbeat_rows": 7186,
+      "max_gap_s": 1.5,
+      "max_gap_with_kill_window_s": 6.9,
+      "gaps_over_5s_excluding_kill": 0,
+      "gaps_over_5s_raw": 1,
+      "longest_gap_at_s": 3620.5
+    },
+    "interruptions_over_5s_excluding_kill_window": 0,
+    "interruptions_over_5s_raw": 1,
+    "all_under_5s_excluding_kill": true,
+    "note": "排除与 SIGKILL 停机窗口重叠的那一个间隔后，w3 最大间隔 1.5s；原始 6.9s 即停机窗口本身。"
+  },
+  "memory": {
+    "segments": {
+      "w2": [
+        {
+          "pid": 4121429,
+          "duration_min": 119.5,
+          "rss_first_kb": 21752,
+          "rss_last_kb": 14888,
+          "delta_kb": -6864,
+          "delta_pct": -31.56,
+          "slope_kb_per_min": -17.88,
+          "increasing_steps": 19,
+          "samples": 479
+        }
+      ],
+      "w1": [
+        {
+          "pid": 4121428,
+          "duration_min": 119.5,
+          "rss_first_kb": 21748,
+          "rss_last_kb": 14868,
+          "delta_kb": -6880,
+          "delta_pct": -31.64,
+          "slope_kb_per_min": -17.86,
+          "increasing_steps": 18,
+          "samples": 479
+        }
+      ],
+      "w3": [
+        {
+          "pid": 4121430,
+          "duration_min": 59.5,
+          "rss_first_kb": 21708,
+          "rss_last_kb": 14860,
+          "delta_kb": -6848,
+          "delta_pct": -31.55,
+          "slope_kb_per_min": -67.38,
+          "increasing_steps": 14,
+          "samples": 239
+        },
+        {
+          "pid": 36816,
+          "duration_min": 59.5,
+          "rss_first_kb": 21708,
+          "rss_last_kb": 14928,
+          "delta_kb": -6780,
+          "delta_pct": -31.23,
+          "slope_kb_per_min": -146.74,
+          "increasing_steps": 9,
+          "samples": 239
+        }
+      ]
+    },
+    "first_total_kb": 65208,
+    "last_total_kb": 44616,
+    "delta_total_kb": -20592,
+    "monotonic_growth_detected": false,
+    "note": "每段按采样点首尾值；RSS 从 ~21.7MB 降到 ~14.9MB（-31%），之后平稳，无单调增长。"
+  },
+  "loadavg1": {
+    "n": 480,
+    "min": 0.15,
+    "max": 12.61,
+    "mean": 2.25,
+    "samples_over_4": 51,
+    "first": 1.88,
+    "last": 0.92,
+    "high_load_caveat": true
+  },
+  "mid_run_kill": {
+    "killed_worker": "w3",
+    "killed_pid": 4121430,
+    "task_id": "s-003444",
+    "reassign_ms": 5578.6,
+    "new_worker": "w1",
+    "done_after_kill_ms": 5679.5,
+    "at_elapsed_s": 3606.9,
+    "killed_at_epoch": 1793786876.996805,
+    "restarted_at_epoch": 1793786883.680943
+  },
+  "kill_redispatch_standalone": {
+    "runs": 3,
+    "reassign_ms": [
+      5110.1,
+      7040.5,
+      4848.1
+    ],
+    "min_ms": 4848.1,
+    "max_ms": 7040.5,
+    "mean_ms": 5666.2,
+    "all_within_10s": true,
+    "reclaim_after_kill_ms": [
+      4048.7,
+      5373.9,
+      4768.1
+    ],
+    "loadavg_start": [
+      1.94,
+      4.74,
+      7.12
+    ],
+    "loadavg_end": [
+      1.74,
+      4.24,
+      6.82
+    ],
+    "wall_seconds": 47.6,
+    "note": "在外层再 SIGKILL 掉刚接过任务的 worker；4 次合计范围 4848.1–7040.5ms，全部 ≤10s。"
+  },
+  "zombie_check": {
+    "evalconsole_or_soak_zombies": 0,
+    "system_zombies": 1,
+    "system_zombie_samples": [
+      "1851500 1851488 Z    [sd_espeak-ng-mb] <defunct>"
+    ],
+    "verdict": "eval-console 自身进程树 0 个僵尸；系统里另有 1 个与本次无关的 sd_espeak-ng-mb 僵尸。"
+  },
+  "tests": {
+    "pytest_total": 33,
+    "passed": 33,
+    "failed": 0,
+    "slow_marker": 1,
+    "regular": 32,
+    "duration_s": 17.1
+  },
+  "alerts": [],
+  "caveat": "soak 期间 1m load average 采样 480 次，51 次 >4（max 12.61）。高负载下测得，吞吐/时延数字可能偏低。"
+}

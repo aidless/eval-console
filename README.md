@@ -9,7 +9,7 @@
 ## 最小可跑
 
 ```bash
-git clone <repo-url> && cd eval-console
+git clone https://github.com/aidless/eval-console.git && cd eval-console
 python3 -m evalconsole demo --db ./demo.db --tasks 30 --workers 3
 ```
 
@@ -20,14 +20,23 @@ python3 -m evalconsole demo --db ./demo.db --tasks 30 --workers 3
 | 判据 | 结果 | 证据 |
 | --- | --- | --- |
 | 1. worker 心跳可读 | 1s 心跳写 `workers.heartbeat_at` + `heartbeat_log`，控制台输出"谁活着、多久没动" | `python3 -m evalconsole status --db <db>` |
-| 2. SIGKILL 后 ≤10s 重派 | **3 次实测：4848.1 / 5110.1 / 7040.5 ms，范围 4.8–7.0s**，全部 ≤10s | `evidence/kill_redispatch.json` |
+| 2. SIGKILL 后 ≤10s 重派 | **4 次实测（3 次专项 + soak 中途 1 次）：4848.1 / 5110.1 / 5578.6 / 7040.5 ms，范围 4.8–7.0s**，全部 ≤10s | `evidence/kill_redispatch.json`、`evidence/soak_summary.json` |
 | 3. 状态机落库、重启不重跑 | done 任务在重启后 `attempt`/`updated_at` 不变；崩溃中的 running 任务由租约回收后恢复 | `tests/test_restart_persistence.py` |
-| 4. ≥2h 不间断 soak | **{{SOAK_VERDICT}}** | `evidence/soak_report.json` |
+| 4. ≥2h 不间断 soak | **跑满 7200.0s（01:07:56–03:07:56）：6855 个任务全部 done、0 failed；心跳最大间隔 1.6s；3 worker 合计 RSS 65,208KB→44,616KB；无僵尸** | `evidence/soak_report.json`、`evidence/soak_summary.json` |
 
-{{SOAK_TABLE}}
+| soak 指标 | 实测值（2026-11-04 01:07:56–03:07:56，本机） |
+| --- | --- |
+| 窗口 | **7200.0s 全部跑满**；3 worker + 1 scheduler，1 任务/秒、最多 6 个积压；中途注入 1 次 `SIGKILL` |
+| 任务 | 6855 个，`done 6855 / failed 0 / retried 0 / pending 0 / running 0`，成功率 100%，p95 时延 0.089s |
+| 死锁 | 无卡死任务（租约过期仍 `running` 的采样事件 0 次），drain 后积压清零 |
+| 心跳 | w1 / w2 / w3 最大间隔 **1.53 / 1.60 / 1.50s**；>5s 的心跳中断 **0 次**（kill 造成的 6.9s 停机窗口单独列出，不计为心跳故障） |
+| 内存 | 单 worker RSS 约 21.7MB → 14.9MB（-31%，前几分钟分配器回收后平稳）；3 worker 合计 65,208KB → 44,616KB，斜率负值，**无单调增长** |
+| 负载 | 1m `load average` 采样 480 次：0.15–12.61，均值 2.25，其中 51 次 >4 → **高负载下测得，吞吐/时延数字可能偏低** |
+| 中途 kill | 02:08:03 `SIGKILL` w3 → **5578.6ms** 重派给 w1，5679.5ms 后任务 `done`；w3 随后重启并恢复心跳 |
+| 僵尸进程 | eval-console 进程树 **0 个**僵尸（系统里另有 1 个与本项目无关的 `sd_espeak-ng-mb` 僵尸） |
 
-测试：`33` 条 pytest（`32` 条常规 + `1` 条真实 SIGKILL 慢用例），全部通过。
-2 小时 soak 不是 pytest 用例（CI 机时不允许），由 `scripts/soak.py` 驱动，产出 `evidence/soak_report.json` 与 `evidence/dashboard_soak.html`。
+测试：`33` 条 pytest（`32` 条常规 + `1` 条真实 SIGKILL 慢用例），本机 `python3 -m pytest -q` → **33 passed in 17.10s**。
+2 小时 soak 不是 pytest 用例（CI 机时不允许），由 `scripts/soak.py` 驱动，产出 `evidence/soak_report.json`、`evidence/soak_summary.json` 与 `evidence/dashboard_soak.html`。
 
 ## 机制
 
@@ -93,15 +102,15 @@ worker  ──领取──> BEGIN IMMEDIATE 内 SELECT+UPDATE，只有一个 own
 - 2 小时 soak（CI 机时不允许，结果只在 `evidence/soak_report.json`）
 - 多机、跨主机时钟漂移、NFS/网络盘上的 SQLite
 - 看板的浏览器渲染（只断言 HTML 文本内容，不截图）
-- cgroup / userns 隔离（本仓库不使用隔离，故也无从验证）
+- cgroup / userns 隔离（本仓库不使用隔离，故也无从验证）。GitHub Actions 的 runner 没有 cgroup/userns 委托，任何依赖任务级隔离的用例在 CI 里都不可运行、只能跳过；本仓库当前没有这类用例。
 
 CI 只保证"上面这些跑通了"，不等于全部用例都跑过。README 不写"CI 全绿 = 系统可用"。
 
 ## 这仓库能证明什么
 
-- 单机多进程、SQLite 单一数据源的前提下，**1s 心跳 + 5s 租约 + 0.5s 扫描**的组合，能在 3 次真实 SIGKILL 中于 **4.8–7.0s** 内把任务重派给存活 worker（≤10s 判据成立）。重派后任务会整段重跑并最终 `done`。
+- 单机多进程、SQLite 单一数据源的前提下，**1s 心跳 + 5s 租约 + 0.5s 扫描**的组合，能在 4 次真实 SIGKILL（3 次专项 + 1 次 soak 中途）中于 **4.8–7.0s** 内把任务重派给存活 worker（≤10s 判据成立）。重派后任务会整段重跑并最终 `done`。
 - 进程重启不会重跑已完成任务（`attempt`、`updated_at`、`result` 逐字段不变），崩溃中的 `running` 任务能被回收并恢复。
-- 连续 2 小时、3 worker、约 1 任务/秒的低并发循环派活下，{{SOAK_PROVE}}
+- 连续 2 小时、3 worker、约 1 任务/秒的低并发循环派活下，**6855 个任务全部进入终态（0 卡死、0 失败），三个 worker 心跳最大间隔 1.6s，RSS 从每进程约 21.7MB 降到约 14.9MB 后保持平稳（无单调增长），中途 SIGKILL 掉一个 worker 后 5.58s 完成重派并跑完。**
 - 心跳、状态、重派、告警都落在 SQLite 里，可以直接 `sqlite3` 查询复核，不依赖日志文本。
 
 ## 这仓库不能证明什么
