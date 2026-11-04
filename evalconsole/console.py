@@ -97,12 +97,12 @@ def render_text(conn: sqlite3.Connection, stale_after: float = 15.0) -> str:
     summary = task_summary(conn)
     lines = [
         f"== worker 心跳（{db.now():.0f}，> {stale_after:.0f}s 未更新判定为 stale）==",
-        f"{'worker':<10}{'pid':>7}{'状态':<9}{'心跳龄(s)':>10}{'重启':>6}  {'当前/最近任务':<20}",
+        f"{'worker':<12}{'pid':>8}  {'state':<9}{'hb_age(s)':>11}{'restarts':>9}  {'last_task':<16}",
     ]
     for w in worker_status(conn, stale_after):
         lines.append(
-            f"{w['worker_id']:<10}{str(w['pid']):>7}{w['state']:<9}{w['heartbeat_age_s']:>10.2f}"
-            f"{w['restart_count']:>6}  {str(w['last_task_id']):<20}"
+            f"{w['worker_id']:<12}{str(w['pid']):>8}  {w['state']:<9}{w['heartbeat_age_s']:>11.2f}"
+            f"{w['restart_count']:>9}  {str(w['last_task_id'] or '-'):<16}"
         )
     c = summary["counts"]
     lines += [
