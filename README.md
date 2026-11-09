@@ -1,5 +1,7 @@
 # eval-console
 
+[![CI](https://github.com/aidless/eval-console/actions/workflows/ci.yml/badge.svg)](https://github.com/aidless/eval-console/actions/workflows/ci.yml)
+
 评测 fleet 的**持续运行与自愈**：SQLite 任务状态机 + worker 心跳 + 租约回收 + kill 后自动重派 + 控制台看板。
 零第三方运行时依赖（Python 3.10+ 标准库），单机多进程。
 
