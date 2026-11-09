@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/aidless/eval-console/actions/workflows/ci.yml/badge.svg)](https://github.com/aidless/eval-console/actions/workflows/ci.yml)
 
+> **English TL;DR**: A self-healing execution layer for evaluation fleets: a SQLite task state machine with worker heartbeats, 5s lease reclaim, and automatic redispatch after SIGKILL — pure Python stdlib, zero runtime dependencies. Try `python3 -m evalconsole demo`. Evidence is measured, not asserted: real kills redispatched within 4.8–7.0s and a 2-hour soak of 6,855 tasks with zero failures; the limits are equally explicit — at-least-once semantics, single machine, not a production scheduler.
+
 评测 fleet 的**持续运行与自愈**：SQLite 任务状态机 + worker 心跳 + 租约回收 + kill 后自动重派 + 控制台看板。
 零第三方运行时依赖（Python 3.10+ 标准库），单机多进程。
 
